@@ -7,7 +7,7 @@ import javax.inject.Inject
 
 class GetFavouriteCitiesUseCase @Inject constructor(private val repository: FavouriteRepository) {
 
-    operator fun invoke(): Flow<City> {
+    operator fun invoke(): Flow<List<City>> {
         return repository.favouriteCities
     }
 }
