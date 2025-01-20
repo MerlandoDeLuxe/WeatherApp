@@ -1,7 +1,12 @@
+import com.android.build.api.variant.BuildConfigField
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    id("com.google.devtools.ksp")
+    id("kotlin-kapt")
+    id("com.google.dagger.hilt.android")
 }
 
 android {
@@ -10,7 +15,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.weatherapp"
-        minSdk = 32
+        minSdk = 31
         targetSdk = 35
         versionCode = 1
         versionName = "1.0"
@@ -36,10 +41,53 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
+    }
+    kapt {
+        correctErrorTypes = true
     }
 }
 
+androidComponents {
+    val key = property("WEATHER_API_KEY")?.toString() ?: error(
+        "Нужно добавить API " +
+                "key в gradle.properties"
+    )
+
+    onVariants {variant ->
+        variant.buildConfigFields.put(
+            "WEATHER_API_KEY",
+            BuildConfigField("String", "\"$key\"", "API key для доступа к сервису")
+        )
+    }
+
+}
+
 dependencies {
+    implementation(libs.decompose.core)
+    implementation(libs.decompose.compose)
+
+    implementation(libs.mvikotlin)
+    implementation(libs.mvikotlin.main)
+    implementation(libs.mvikotlin.extensions.coroutines)
+
+    implementation(libs.androidx.room.runtime)
+    kapt(libs.androidx.room.compiler)
+    implementation(libs.androidx.room.ktx)
+
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.android.compiler)
+
+    implementation(libs.glide.compose)
+
+    implementation(libs.retrofit.core)
+    implementation(libs.converter.gson)
+
+    implementation(libs.icons)
+
+    implementation(platform(libs.okhttp.bom))
+    implementation(libs.okhttp)
+    implementation(libs.logging.interceptor)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
