@@ -57,7 +57,7 @@ androidComponents {
     onVariants {variant ->
         variant.buildConfigFields.put(
             "WEATHER_API_KEY",
-            BuildConfigField("String", "\"$key\"", "API key для доступа к сервису")
+            BuildConfigField("String", "$key\"", "API key для доступа к сервису")
         )
     }
 
