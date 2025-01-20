@@ -1,3 +1,5 @@
+import com.android.build.api.variant.BuildConfigField
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -39,19 +41,35 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
     kapt {
         correctErrorTypes = true
     }
 }
 
+androidComponents {
+    val key = property("WEATHER_API_KEY")?.toString() ?: error(
+        "Нужно добавить API " +
+                "key в gradle.properties"
+    )
+
+    onVariants {variant ->
+        variant.buildConfigFields.put(
+            "WEATHER_API_KEY",
+            BuildConfigField("String", "\"$key\"", "API key для доступа к сервису")
+        )
+    }
+
+}
+
 dependencies {
     implementation(libs.decompose.core)
     implementation(libs.decompose.compose)
 
-    implementation (libs.mvikotlin)
-    implementation (libs.mvikotlin.main)
-    implementation (libs.mvikotlin.extensions.coroutines)
+    implementation(libs.mvikotlin)
+    implementation(libs.mvikotlin.main)
+    implementation(libs.mvikotlin.extensions.coroutines)
 
     implementation(libs.androidx.room.runtime)
     kapt(libs.androidx.room.compiler)
@@ -60,9 +78,9 @@ dependencies {
     implementation(libs.hilt.android)
     kapt(libs.hilt.android.compiler)
 
-    implementation (libs.glide.compose)
+    implementation(libs.glide.compose)
 
-    implementation (libs.retrofit.core)
+    implementation(libs.retrofit.core)
     implementation(libs.converter.gson)
 
     implementation(libs.icons)
