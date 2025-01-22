@@ -9,7 +9,7 @@ import com.example.weatherapp.domain.entity.City
 import com.example.weatherapp.domain.entity.Forecast
 import com.example.weatherapp.domain.usecase.ChangeFavouriteStateUseCase
 import com.example.weatherapp.domain.usecase.GetForecastUseCase
-import com.example.weatherapp.domain.usecase.ObserveFavoriteStateUseCase
+import com.example.weatherapp.domain.usecase.ObserveFavouriteStateUseCase
 import com.example.weatherapp.presentation.details.DetailsStore.Intent
 import com.example.weatherapp.presentation.details.DetailsStore.Label
 import com.example.weatherapp.presentation.details.DetailsStore.State
@@ -46,7 +46,7 @@ class DetailsStoreFactory @Inject constructor(
     private val storeFactory: StoreFactory,
     private val getForecastUseCase: GetForecastUseCase,
     private val changeFavouriteStateUseCase: ChangeFavouriteStateUseCase,
-    private val observeFavoriteStateUseCase: ObserveFavoriteStateUseCase
+    private val observeFavouriteStateUseCase: ObserveFavouriteStateUseCase
 ) {
 
     fun create(city: City): DetailsStore =
@@ -81,7 +81,7 @@ class DetailsStoreFactory @Inject constructor(
     private inner class BootstrapperImpl(private val city: City) : CoroutineBootstrapper<Action>() {
         override fun invoke() {
             scope.launch {
-                observeFavoriteStateUseCase(cityId = city.id).collect {
+                observeFavouriteStateUseCase(cityId = city.id).collect {
                     dispatch(Action.FavouriteStatusChange(it))
                 }
             }

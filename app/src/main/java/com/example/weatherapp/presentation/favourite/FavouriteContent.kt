@@ -1,9 +1,9 @@
-package com.example.weatherapp.presentation.favorite
+package com.example.weatherapp.presentation.favourite
 
 import androidx.compose.runtime.Composable
 
 @Composable
-fun FavoriteContent(
+fun FavouriteContent(
     component: FavouriteComponent
 ) {
 

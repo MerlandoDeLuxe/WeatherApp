@@ -1,4 +1,4 @@
-package com.example.weatherapp.presentation.favorite
+package com.example.weatherapp.presentation.favourite
 
 import com.arkivanov.mvikotlin.core.store.Reducer
 import com.arkivanov.mvikotlin.core.store.Store
@@ -8,13 +8,13 @@ import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineExecutor
 import com.example.weatherapp.domain.entity.City
 import com.example.weatherapp.domain.usecase.GetCurrentWeatherUseCase
 import com.example.weatherapp.domain.usecase.GetFavouriteCitiesUseCase
-import com.example.weatherapp.presentation.favorite.FavoriteStore.Intent
-import com.example.weatherapp.presentation.favorite.FavoriteStore.Label
-import com.example.weatherapp.presentation.favorite.FavoriteStore.State
+import com.example.weatherapp.presentation.favourite.FavouriteStore.Intent
+import com.example.weatherapp.presentation.favourite.FavouriteStore.Label
+import com.example.weatherapp.presentation.favourite.FavouriteStore.State
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-interface FavoriteStore : Store<Intent, State, Label> {
+interface FavouriteStore : Store<Intent, State, Label> {
 
     sealed interface Intent {
         //Что может делать пользователь:
@@ -22,7 +22,7 @@ interface FavoriteStore : Store<Intent, State, Label> {
         //2. Кликать по кнопке Добавить город в избранное
         //3. Кликать по городу
         data object ClickSearch : Intent
-        data object ClickToFavourite : Intent
+        data object ClickAddToFavourite : Intent
         data class CityItemClick(val city: City) : Intent
     }
 
@@ -30,7 +30,7 @@ interface FavoriteStore : Store<Intent, State, Label> {
     //поэтому создаем такие же лейблы
     sealed interface Label {
         data object ClickSearch : Label
-        data object ClickToFavourite : Label
+        data object ClickAddToFavourite : Label
         data class CityItemClick(val city: City) : Label
     }
 
@@ -59,15 +59,15 @@ interface FavoriteStore : Store<Intent, State, Label> {
 
 }
 
-class FavoriteStoreFactory @Inject constructor(
+class FavouriteStoreFactory @Inject constructor(
     private val storeFactory: StoreFactory,
     private val getFavouriteCitiesUseCase: GetFavouriteCitiesUseCase,
     private val getCurrentWeatherUseCase: GetCurrentWeatherUseCase
 ) {
 
-    fun create(): FavoriteStore =
-        object : FavoriteStore, Store<Intent, State, Label> by storeFactory.create(
-            name = "FavoriteStore",
+    fun create(): FavouriteStore =
+        object : FavouriteStore, Store<Intent, State, Label> by storeFactory.create(
+            name = "FavouriteStore",
             initialState = State(
                 cityItems = listOf()
             ),
@@ -135,8 +135,8 @@ class FavoriteStoreFactory @Inject constructor(
                     publish(Label.ClickSearch)
                 }
 
-                Intent.ClickToFavourite -> {
-                    publish(Label.ClickToFavourite)
+                Intent.ClickAddToFavourite -> {
+                    publish(Label.ClickAddToFavourite)
                 }
             }
         }
