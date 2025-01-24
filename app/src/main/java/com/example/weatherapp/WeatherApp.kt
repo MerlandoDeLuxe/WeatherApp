@@ -1,8 +1,13 @@
 package com.example.weatherapp
 
 import android.app.Application
-import dagger.hilt.android.HiltAndroidApp
+import com.example.weatherapp.di.DaggerApplicationComponent
 
-@HiltAndroidApp
+
 class WeatherApp : Application() {
+
+    val component by lazy {
+        DaggerApplicationComponent.factory()
+            .create(this)
+    }
 }

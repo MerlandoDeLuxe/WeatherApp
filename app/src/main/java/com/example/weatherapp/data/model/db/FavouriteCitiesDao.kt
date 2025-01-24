@@ -16,7 +16,7 @@ interface FavouriteCitiesDao {
     //На этот объект мы будем подписываться, поэтому возвращаемый тип Flow
 
     @Query("select exists (select * from favourite_cities where id =:cityId limit 1)")
-    fun observeIsFavorite(cityId: Int): Flow<Boolean>
+    fun observeIsFavourite(cityId: Int): Flow<Boolean>
     //Метод также возвращает Flow: присутствует объект в базе данных или нет
     //exists возвращает true или false
 

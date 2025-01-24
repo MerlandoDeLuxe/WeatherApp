@@ -7,6 +7,7 @@ import com.example.weatherapp.domain.entity.City
 import com.example.weatherapp.domain.repository.FavouriteRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.retry
 import javax.inject.Inject
 
 class FavouriteRepositoryImpl @Inject constructor(
@@ -16,10 +17,10 @@ class FavouriteRepositoryImpl @Inject constructor(
     override val favouriteCities: Flow<List<City>>
         get() = favouriteCitiesDao.getFavouriteCities().map {
             it.toEntities()
-        }
+        }.retry(3)
 
     override fun observeIsFavourite(cityId: Int): Flow<Boolean> =
-        favouriteCitiesDao.observeIsFavorite(cityId)
+        favouriteCitiesDao.observeIsFavourite(cityId)
 
 
     override suspend fun addToFavourite(city: City) {
