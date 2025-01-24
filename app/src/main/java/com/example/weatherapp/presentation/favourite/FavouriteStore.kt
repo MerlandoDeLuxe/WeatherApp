@@ -183,15 +183,13 @@ class FavouriteStoreFactory @Inject constructor(
         override fun State.reduce(msg: Msg): State {
             return when (msg) {
                 is Msg.FavouriteCitiesLoaded -> {
-                    //Копировать нужно всегда
-                    val cityItems = this.copy().cityItems.map {
-                        State.CityItem(
-                            city = it.city,
-                            weatherState = State.WeatherState.InitialState
-                        )
-                    }
-                    State(
-                        cityItems = cityItems
+                    copy(
+                        cityItems = msg.cities.map {
+                            State.CityItem(
+                                city = it,
+                                weatherState = State.WeatherState.InitialState
+                            )
+                        }
                     )
                 }
 

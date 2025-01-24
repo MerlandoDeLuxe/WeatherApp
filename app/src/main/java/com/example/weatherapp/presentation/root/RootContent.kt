@@ -1,5 +1,6 @@
 package com.example.weatherapp.presentation.root
 
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
 import com.arkivanov.decompose.extensions.compose.stack.Children
 import com.example.weatherapp.presentation.details.DetailsContent
@@ -9,7 +10,8 @@ import com.example.weatherapp.presentation.ui.theme.WeatherAppTheme
 
 @Composable
 fun RootContent (
-    component: RootComponent
+    component: RootComponent,
+    paddingValues: PaddingValues
 ) {
     WeatherAppTheme {
         Children(stack = component.stack) {
@@ -19,7 +21,10 @@ fun RootContent (
                 }
 
                 is RootComponent.Child.Favourite -> {
-                    FavouriteContent(component = instance.component)
+                    FavouriteContent(
+                        component = instance.component,
+                        paddingValues
+                    )
                 }
 
                 is RootComponent.Child.Search -> {
